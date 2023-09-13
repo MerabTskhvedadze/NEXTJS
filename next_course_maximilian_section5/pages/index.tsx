@@ -37,5 +37,13 @@ export async function getStaticProps() {
     props: { products },
     //regeneration won't happend if page refreshes below 10sc
     revalidate: 10,
+
+    //redirects to redirect page
+    // redirect: {
+    //   destination: "/redirect",
+    // },
+
+    //redirects to 404 page
+    // notFound: true,
   };
 }
