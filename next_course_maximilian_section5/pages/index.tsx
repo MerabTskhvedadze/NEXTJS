@@ -1,24 +1,37 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+import path from "path";
+import fs from "fs/promises";
 
-const inter = Inter({ subsets: ["latin"] });
+type Product = {
+  id: string;
+  title: string;
+  description: string;
+};
 
-export default function Home(props: any) {
-  console.log(props);
+type HomeProps = {
+  products: Product[];
+};
 
+export default function Home({ products }: HomeProps) {
   return (
     <ul>
-      <li>Product 1</li>
-      <li>Product 2</li>
-      <li>Product 3</li>
+      {products.map(({ id, title, description }: Product) => {
+        return (
+          <li key={id}>
+            <h1>{title}</h1>
+            <p>{description}</p>
+          </li>
+        );
+      })}
     </ul>
   );
 }
 
 export async function getStaticProps() {
+  const fullPath = path.join(process.cwd(), "data", "mock_data.json");
+  const jsonData = await fs.readFile(fullPath);
+  const { products }: HomeProps = JSON.parse(jsonData.toString());
+
   return {
-    props: { product: { id: 1, title: "Product 1" } },
+    props: { products },
   };
 }
