@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs/promises";
+import Link from "next/link";
 
 type Product = {
   id: string;
@@ -17,8 +18,7 @@ export default function Home({ products }: HomeProps) {
       {products.map(({ id, title, description }: Product) => {
         return (
           <li key={id}>
-            <h1>{title}</h1>
-            <p>{description}</p>
+            <Link href={`/${id}`}>{title}</Link>
           </li>
         );
       })}
@@ -27,8 +27,6 @@ export default function Home({ products }: HomeProps) {
 }
 
 export async function getStaticProps() {
-  console.log("Regenerating...");
-
   const fullPath = path.join(process.cwd(), "data", "mock_data.json");
   const jsonData = await fs.readFile(fullPath);
   const { products }: HomeProps = JSON.parse(jsonData.toString());
